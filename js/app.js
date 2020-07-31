@@ -24,7 +24,14 @@ saveButton.addEventListener("click", function (e) {
   let notes = localStorage.getItem("notes");
   notesObj = JSON.parse(notes);
   index = state.split("-")[0];
-  notesObj[index] = index + "-" + editText.value;
+  if (state.includes("|")) {
+    dateAppend = "|" + state.split("|")[1];
+  } else {
+    dateAppend = "";
+  }
+  var date = new Date();
+  notesObj[index] =
+    index + "-" + editText.value + dateAppend + "|" + date.toLocaleString();
   notesObj.forEach(function (element, i) {
     element = i + "-" + element.split("-")[1];
     notesObj[i] = element;
@@ -36,6 +43,8 @@ saveButton.addEventListener("click", function (e) {
 //function to show the contents of a note
 function showNotes() {
   $("#editArea").modal("hide");
+  //   var date = new Date();
+  //     console.log(date.toLocaleString());
   let notes = localStorage.getItem("notes");
   if (notes == null) {
     notesObj = [];
@@ -44,14 +53,16 @@ function showNotes() {
   }
   let html = "";
   notesObj.forEach(function (element, index) {
-    console.log(new Date());
     html += `
                 <div class="noteCard my-2 mx-2 card" style="width: 18rem;">
                     <div class="card-body">
                     <h5 class="card-title">Note ${index + 1}</h5>
-                    <p class="card-text">${element.split("-")[1]}</p>
+                    <p class="card-text">${
+                      element.split("-")[1].split("|")[0]
+                    }</p>
                     <button id="${index}" onclick="deleteNote(this.id)" class="btn btn-primary">Delete</button>
                     <button id="${index}" onclick="editNote(this.id)" class="btn btn-primary">Edit</button>
+                    <button id="${index}" onclick="viewRevision(this.id)" class="btn btn-primary">History</button>
                     </div>
                 </div>`;
   });
@@ -85,18 +96,23 @@ function editNote(index) {
   let notes = localStorage.getItem("notes");
   let editText = document.getElementById("editText");
   state = JSON.parse(notes)[index];
-  editText.value = state.split("-")[1];
+  editText.value = state.split("-")[1].split("|")[0];
   $("#editArea").modal("show");
-  // if (notes == null) {
-  // notesObj = [];
-  // } else {
-  // notesObj = JSON.parse(notes);
-  // }
-  // let divElement = document.createElement('div');
-  // divElement.setAttribute('id', 'element');
-  // divElement.setAttribute('class', 'element');
-  // let html = `<textarea class="form-control" id="editArea" rows="3"></textarea>`;
-  // notesObj[index].innerHTML = html;
+}
+
+// Function to view update history
+function viewRevision(index) {
+  let notes = localStorage.getItem("notes");
+  let history = document.getElementById("history");
+  var versions = "";
+  splitArray = JSON.parse(notes)[index].split("|");
+  splitArray.forEach(function(element) {
+    if(element.includes("/") && element.includes(":")){
+        versions += element + "\n---------------------\n";
+    }
+  });
+  history.value = versions;
+  $("#revisionHistory").modal("show");
 }
 
 let searchText = document.getElementById("searchText");
@@ -107,6 +123,7 @@ searchText.addEventListener("input", function () {
     let cardText = element
       .getElementsByTagName("p")[0]
       .innerText.split("-")[1]
+      .split("|")[0]
       .toLowerCase();
     if (cardText.includes(inputValue)) {
       element.style.display = "block";
