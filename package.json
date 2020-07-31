@@ -4,10 +4,16 @@
   "description": "Notes App",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "test-coverage": "jscoverage lib lib-cov &&  mocha --reporter html-cov > code-coverage.html"
   },
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "chai": "4.2.0",
+    "chai-http": "4.2.1",
+    "mocha": "5.2.0"
+  },
   "dependencies": {
     "bootbox": "^5.4.0",
     "bootstrap": "4.5.0",
