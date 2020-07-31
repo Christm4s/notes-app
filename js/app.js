@@ -1,6 +1,9 @@
 showNotes();
+
 let addButton = document.getElementById("addButton");
+
 addButton.addEventListener("click", function (e) {
+
   let addText = document.getElementById("addText");
   let notes = localStorage.getItem("notes");
   if (notes == null) {
@@ -11,12 +14,12 @@ addButton.addEventListener("click", function (e) {
   notesObj.push(addText.value);
   localStorage.setItem("notes", JSON.stringify(notesObj));
   addText.value = "";
-  console.log(notesObj);
   showNotes();
 });
 
 //function to show the contents of a note
 function showNotes() {
+
   let notes = localStorage.getItem("notes");
   if (notes == null) {
     notesObj = [];
@@ -44,7 +47,7 @@ function showNotes() {
 
 // Function to delete a note
 function deleteNote(index) {
-  console.log("Delete a note", index);
+
   let notes = localStorage.getItem("notes");
   if (notes == null) {
     notesObj = [];
@@ -55,3 +58,19 @@ function deleteNote(index) {
   localStorage.setItem("notes", JSON.stringify(notesObj));
   showNotes();
 }
+
+let searchText = document.getElementById('searchText');
+searchText.addEventListener("input", function(){
+
+    let inputValue = searchText.value.toLowerCase();
+    let noteCards = document.getElementsByClassName('noteCard');
+    Array.from(noteCards).forEach(function(element){
+        let cardText = element.getElementsByTagName('p')[0].innerText.toLowerCase();
+        if(cardText.includes(inputValue)){
+            element.style.display = "block";
+        }
+        else{
+            element.style.display = "none";
+        }
+    });
+});
