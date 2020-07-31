@@ -110,10 +110,14 @@ function viewRevision(index) {
   splitArray = JSON.parse(notes)[index].split("|").reverse();
   splitArray.forEach(function (element) {
     if (element.includes("/") && element.includes(":")) {
-      versions += element + "\n---------------------\n";
+      versions += element + "\n";
     }
   });
-  history.value = versions;
+  history.value = versions.trim();
+  if(versions.trim().length == 0) {
+    history.value = "No updates found";
+  }
+  history.setAttribute("rows", versions.split("\n").length - 1)
   $("#revisionHistory").modal("show");
 }
 
