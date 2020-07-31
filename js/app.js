@@ -114,6 +114,7 @@ function viewRevision(index) {
     }
   });
   history.value = versions;
+  history.setAttribute("rows", versions.split("\n").length - 1)
   $("#revisionHistory").modal("show");
 }
 
