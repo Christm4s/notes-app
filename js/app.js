@@ -1,4 +1,3 @@
-// var bootbox = require('bootbox');
 showNotes();
 var state = "";
 
@@ -26,10 +25,10 @@ saveButton.addEventListener("click", function (e) {
   index = state.split("-")[0];
   if (state.includes("|")) {
     dateAppend = "|";
-    state.split("|").forEach(function(element){
-        if(element.includes("/") && element.includes(":")){
-            dateAppend += element + "|";
-        }
+    state.split("|").forEach(function (element) {
+      if (element.includes("/") && element.includes(":")) {
+        dateAppend += element + "|";
+      }
     });
   } else {
     dateAppend = "";
@@ -48,8 +47,6 @@ saveButton.addEventListener("click", function (e) {
 //function to show the contents of a note
 function showNotes() {
   $("#editArea").modal("hide");
-  //   var date = new Date();
-  //     console.log(date.toLocaleString());
   let notes = localStorage.getItem("notes");
   if (notes == null) {
     notesObj = [];
@@ -111,9 +108,9 @@ function viewRevision(index) {
   let history = document.getElementById("history");
   var versions = "";
   splitArray = JSON.parse(notes)[index].split("|").reverse();
-  splitArray.forEach(function(element) {
-    if(element.includes("/") && element.includes(":")){
-        versions += element + "\n---------------------\n";
+  splitArray.forEach(function (element) {
+    if (element.includes("/") && element.includes(":")) {
+      versions += element + "\n---------------------\n";
     }
   });
   history.value = versions;
