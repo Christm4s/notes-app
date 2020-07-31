@@ -25,7 +25,12 @@ saveButton.addEventListener("click", function (e) {
   notesObj = JSON.parse(notes);
   index = state.split("-")[0];
   if (state.includes("|")) {
-    dateAppend = "|" + state.split("|")[1];
+    dateAppend = "|";
+    state.split("|").forEach(function(element){
+        if(element.includes("/") && element.includes(":")){
+            dateAppend += element + "|";
+        }
+    });
   } else {
     dateAppend = "";
   }
@@ -105,7 +110,7 @@ function viewRevision(index) {
   let notes = localStorage.getItem("notes");
   let history = document.getElementById("history");
   var versions = "";
-  splitArray = JSON.parse(notes)[index].split("|");
+  splitArray = JSON.parse(notes)[index].split("|").reverse();
   splitArray.forEach(function(element) {
     if(element.includes("/") && element.includes(":")){
         versions += element + "\n---------------------\n";
