@@ -124,8 +124,7 @@ searchText.addEventListener("input", function () {
   Array.from(noteCards).forEach(function (element) {
     let cardText = element
       .getElementsByTagName("p")[0]
-      .innerText.split("-")[1]
-      .split("|")[0]
+      .innerText
       .toLowerCase();
     if (cardText.includes(inputValue)) {
       element.style.display = "block";
